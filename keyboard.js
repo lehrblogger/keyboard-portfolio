@@ -1,7 +1,12 @@
+var rowArray = new Array(new Array("Q", "W", "E"/*, "R", "T", "Y", "U", "I", "O", "P"*/),
+				         new Array("A", "S", "D"/*, "F", "G", "H", "J", "K", "L"*/),
+			 	         new Array("Z", "X", "C"/*, "V", "B", "N", "M"*/)
+			   )
 var rowArray = new Array(new Array("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
 				         new Array("A", "S", "D", "F", "G", "H", "J", "K", "L"),
 			 	         new Array("Z", "X", "C", "V", "B", "N", "M")
 			   )
+
 var allKeyObjects = new Array();
 var currentKey;	// will be initialized in init()
 var currentSize = 'keySmall';
@@ -9,6 +14,7 @@ var keySize;
 var keyBuffer;
 
 function init() {	
+console.log("test");
 	updateCurrentKeySize();
 	addKeyObjectsAndEvents();
 	updateCurrentKeyByLetter(rowArray[0][0].toLowerCase());
@@ -91,11 +97,13 @@ function updateCurrentKeySize() {
 	var tempElem = new Element('div', {
 		'class': currentSize
 	});
+	document.body.grab(tempElem);
 	
 	keySize = tempElem.getStyle('width').toInt();
 	keyBuffer = keySize / 5;
 	
 	tempElem.removeClass(currentSize);
+	tempElem.destroy();
 	delete tempElem;
 }
 

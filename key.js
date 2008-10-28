@@ -14,6 +14,8 @@ var Key = new Class (
 			'id':this.letter,
 			'html':this.letter
 		});
+
+		document.body.grab(this.element);
 		
 		// Listen for clicks
 	    this.element.addEvent('click', function(e) {
@@ -26,8 +28,6 @@ var Key = new Class (
 		this.updateSize('keySmall', false);
 		this.setSizes(this.element.getStyle('width').toInt());	//we can use this because the previous call isn't tweening and finishes by the time it gets here
 		this.updateLoc(0, 0, false);
-		
-		document.body.grab(this.element);
 	},
 	
 	// updates the size of the key - 
@@ -66,8 +66,8 @@ var Key = new Class (
 	updateLoc: function(offsetX, offsetY, useTween) {
 	 	this.originX += offsetX;	// the location will be dependent on where the current key is, so these offsets should be passed
 	  	this.originY += offsetY;
-		var targetX = this.originX + ((this.size + this.buffer) * this.col);
-		var targetY = this.originY + ((this.size + this.buffer) * this.row);
+		var targetX = this.originX + ((this.dim + this.buffer) * this.col);
+		var targetY = this.originY + ((this.dim + this.buffer) * this.row);
 		
 		if (useTween) {
 			this.locMorph.cancel(); //why not link: 'cancel'?
@@ -84,7 +84,7 @@ var Key = new Class (
 	
 	// a simple function to update the Key's size info
 	setSizes: function(dimension) {
-		this.size = dimension;
-		this.buffer = this.size / 5;
+		this.dim = dimension;
+		this.buffer = this.dim / 5;
 	}
 });
