@@ -36,6 +36,7 @@ function buildHTMLContent() {
 	 	  var rows = new Array();
 	 	  var cols = new Array();
 	 	  var types = new Array();
+	 	  var slugs = new Array();
 	 	</script>	
 	";
 	$content = $content . $tempContent;
@@ -48,8 +49,9 @@ function buildHTMLContent() {
 	 				rows[" . $counter . "]=" . $row["row"] . ";
 	 				cols[" . $counter . "]=" . $row["col"] . ";
 	 				types[" . $counter . "]='" . $row["type"] . "';
+	 				slugs[" . $counter . "]='" . $row["slug"] . "';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>" . strtoupper($row["key_char"]) . "</div>
 	 			
 	 			<div class='name-text'>" . $row["name"] . "</div>
@@ -92,6 +94,7 @@ function buildHTMLString() {
 			<script src='keyboard.js' type='text/javascript' charset='utf-8'></script>
 			<script src='key.js' type='text/javascript' charset='utf-8'></script>
 			<script src='textdiv.js' type='text/javascript' charset='utf-8'></script>
+			<script src='flickrdiv.js' type='text/javascript' charset='utf-8'></script>
 		  </head>
 		<body id='main' onload='init()'>
 	";

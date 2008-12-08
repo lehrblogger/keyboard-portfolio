@@ -1,12 +1,13 @@
 // a separate file for the Key class, since the other one was getting long
 var Key = new Class ( 
 {
-	initialize: function (element, row, col, type, originX, originY, zoomLevels) {
+	initialize: function (element, slug, row, col, type, originX, originY, zoomLevels) {
 		this.duration = 500;
 		this.fps = 24;
 		this.transition = Fx.Transitions.linear;
 		
 		this.element = element;
+		this.slug = slug;
 		this.letter = this.element.getProperty('id');
 		this.row = row;
 		this.col = col;
@@ -28,10 +29,15 @@ var Key = new Class (
 			this.children.push(new TextDiv(this.element.getChildren('div')[i], this.duration, this.fps, this.transition));
 		}
 		
+		
+		var newDiv = new Element('div');
+		newDiv.inject(this.element, 'bottom');
+		this.children.push(new FlickrDiv(newDiv, this.slug, this.zoomLevel, this.duration, this.fps, this.transition));
+		
+		
 		// Listen for clicks
 	    this.element.addEvent('click', function(e) {
-	      	increaseCurrentSize();
-			zoomOnKey(this.letter.toLowerCase());
+			 //BROKEN FIX LATER handleKeyPress(e.key, true);
 	    }.bind(this));
 	
 		this.updateSize('keySmall', this.width, false);

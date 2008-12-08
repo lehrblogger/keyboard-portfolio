@@ -34,7 +34,7 @@ function init() {
 // builds an object and an keypress event for each key
 function addKeyObjectsAndEvents() {
 	for (var i = 0; i < allDivs.length; i++) {
-			allKeyObjects.push(new Key(allDivs[i], rows[i], cols[i], types[i], keyBuffer, keyBuffer, zoomLevels));
+			allKeyObjects.push(new Key(allDivs[i], slugs[i], rows[i], cols[i], types[i], keyBuffer, keyBuffer, zoomLevels));
 			
 			window.addEvent( 'keydown', function(e) {
 		    var evt = new Event(e);

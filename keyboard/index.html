@@ -24,6 +24,7 @@
 			<script src='keyboard.js' type='text/javascript' charset='utf-8'></script>
 			<script src='key.js' type='text/javascript' charset='utf-8'></script>
 			<script src='textdiv.js' type='text/javascript' charset='utf-8'></script>
+			<script src='flickrdiv.js' type='text/javascript' charset='utf-8'></script>
 		  </head>
 		<body id='main' onload='init()'>
 	
@@ -31,6 +32,7 @@
 	 	  var rows = new Array();
 	 	  var cols = new Array();
 	 	  var types = new Array();
+	 	  var slugs = new Array();
 	 	</script>	
 	
 	 		<div id='a' class='key'>
@@ -38,8 +40,9 @@
 	 				rows[0]=1;
 	 				cols[0]=0;
 	 				types[0]='project';
+	 				slugs[0]='akey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>A</div>
 	 			
 	 			<div class='name-text'>A key</div>
@@ -52,8 +55,9 @@
 	 				rows[1]=2;
 	 				cols[1]=8;
 	 				types[1]='hidden';
+	 				slugs[1]='.key';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>.</div>
 	 			
 	 			<div class='name-text'>. key</div>
@@ -66,8 +70,9 @@
 	 				rows[2]=0;
 	 				cols[2]=0;
 	 				types[2]='project';
+	 				slugs[2]='qkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>Q</div>
 	 			
 	 			<div class='name-text'>Q key</div>
@@ -80,8 +85,9 @@
 	 				rows[3]=2;
 	 				cols[3]=2;
 	 				types[3]='project';
+	 				slugs[3]='ckey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>C</div>
 	 			
 	 			<div class='name-text'>C key</div>
@@ -94,8 +100,9 @@
 	 				rows[4]=2;
 	 				cols[4]=3;
 	 				types[4]='project';
+	 				slugs[4]='vkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>V</div>
 	 			
 	 			<div class='name-text'>V key</div>
@@ -108,8 +115,9 @@
 	 				rows[5]=2;
 	 				cols[5]=4;
 	 				types[5]='project';
+	 				slugs[5]='bkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>B</div>
 	 			
 	 			<div class='name-text'>B key</div>
@@ -122,13 +130,14 @@
 	 				rows[6]=0;
 	 				cols[6]=1;
 	 				types[6]='project';
+	 				slugs[6]='project2';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>W</div>
 	 			
-	 			<div class='name-text'>W key</div>
+	 			<div class='name-text'>Flickr test</div>
 	 			
-	 			<div class='body-text'>w text</div>
+	 			<div class='body-text'>This project is going to test the display of photos from Flickr.</div>
 			</div>
 			
 	 		<div id='r' class='key'>
@@ -136,8 +145,9 @@
 	 				rows[7]=0;
 	 				cols[7]=3;
 	 				types[7]='blank';
+	 				slugs[7]='rkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>R</div>
 	 			
 	 			<div class='name-text'>R key</div>
@@ -150,8 +160,9 @@
 	 				rows[8]=0;
 	 				cols[8]=4;
 	 				types[8]='project';
+	 				slugs[8]='tkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>T</div>
 	 			
 	 			<div class='name-text'>T key</div>
@@ -164,8 +175,9 @@
 	 				rows[9]=0;
 	 				cols[9]=5;
 	 				types[9]='project';
+	 				slugs[9]='ykey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>Y</div>
 	 			
 	 			<div class='name-text'>Y key</div>
@@ -178,8 +190,9 @@
 	 				rows[10]=1;
 	 				cols[10]=3;
 	 				types[10]='project';
+	 				slugs[10]='fkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>F</div>
 	 			
 	 			<div class='name-text'>F key</div>
@@ -192,8 +205,9 @@
 	 				rows[11]=0;
 	 				cols[11]=2;
 	 				types[11]='blank';
+	 				slugs[11]='ekey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>E</div>
 	 			
 	 			<div class='name-text'>E key</div>
@@ -206,8 +220,9 @@
 	 				rows[12]=2;
 	 				cols[12]=1;
 	 				types[12]='project';
+	 				slugs[12]='xkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>X</div>
 	 			
 	 			<div class='name-text'>X key</div>
@@ -220,8 +235,9 @@
 	 				rows[13]=1;
 	 				cols[13]=4;
 	 				types[13]='category';
+	 				slugs[13]='gkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>G</div>
 	 			
 	 			<div class='name-text'>G key</div>
@@ -234,8 +250,9 @@
 	 				rows[14]=2;
 	 				cols[14]=6;
 	 				types[14]='blank';
+	 				slugs[14]='mkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>M</div>
 	 			
 	 			<div class='name-text'>M key</div>
@@ -248,8 +265,9 @@
 	 				rows[15]=1;
 	 				cols[15]=1;
 	 				types[15]='category';
+	 				slugs[15]='skey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>S</div>
 	 			
 	 			<div class='name-text'>S key</div>
@@ -262,8 +280,9 @@
 	 				rows[16]=2;
 	 				cols[16]=0;
 	 				types[16]='project';
+	 				slugs[16]='zkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>Z</div>
 	 			
 	 			<div class='name-text'>Z key</div>
@@ -276,8 +295,9 @@
 	 				rows[17]=0;
 	 				cols[17]=6;
 	 				types[17]='project';
+	 				slugs[17]='ukey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>U</div>
 	 			
 	 			<div class='name-text'>U key</div>
@@ -290,8 +310,9 @@
 	 				rows[18]=0;
 	 				cols[18]=7;
 	 				types[18]='project';
+	 				slugs[18]='ikey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>I</div>
 	 			
 	 			<div class='name-text'>I key</div>
@@ -304,8 +325,9 @@
 	 				rows[19]=0;
 	 				cols[19]=8;
 	 				types[19]='project';
+	 				slugs[19]='okey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>O</div>
 	 			
 	 			<div class='name-text'>O key</div>
@@ -318,8 +340,9 @@
 	 				rows[20]=0;
 	 				cols[20]=9;
 	 				types[20]='project';
+	 				slugs[20]='pkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>P</div>
 	 			
 	 			<div class='name-text'>P key</div>
@@ -332,8 +355,9 @@
 	 				rows[21]=0;
 	 				cols[21]=10;
 	 				types[21]='hidden';
+	 				slugs[21]='[key';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>[</div>
 	 			
 	 			<div class='name-text'>[ key</div>
@@ -346,8 +370,9 @@
 	 				rows[22]=1;
 	 				cols[22]=9;
 	 				types[22]='hidden';
+	 				slugs[22]=';key';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>;</div>
 	 			
 	 			<div class='name-text'>; key</div>
@@ -360,8 +385,9 @@
 	 				rows[23]=1;
 	 				cols[23]=7;
 	 				types[23]='category';
+	 				slugs[23]='kkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>K</div>
 	 			
 	 			<div class='name-text'>K key</div>
@@ -374,8 +400,9 @@
 	 				rows[24]=1;
 	 				cols[24]=8;
 	 				types[24]='project';
+	 				slugs[24]='lkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>L</div>
 	 			
 	 			<div class='name-text'>L key</div>
@@ -388,8 +415,9 @@
 	 				rows[25]=1;
 	 				cols[25]=2;
 	 				types[25]='project';
+	 				slugs[25]='dkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>D</div>
 	 			
 	 			<div class='name-text'>D key</div>
@@ -406,8 +434,9 @@ line 4</div>
 	 				rows[26]=1;
 	 				cols[26]=5;
 	 				types[26]='project';
+	 				slugs[26]='hkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>H</div>
 	 			
 	 			<div class='name-text'>H key</div>
@@ -420,8 +449,9 @@ line 4</div>
 	 				rows[27]=1;
 	 				cols[27]=6;
 	 				types[27]='project';
+	 				slugs[27]='jkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>J</div>
 	 			
 	 			<div class='name-text'>J key</div>
@@ -434,8 +464,9 @@ line 4</div>
 	 				rows[28]=2;
 	 				cols[28]=5;
 	 				types[28]='project';
+	 				slugs[28]='nkey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>N</div>
 	 			
 	 			<div class='name-text'>N key</div>
@@ -448,8 +479,9 @@ line 4</div>
 	 				rows[29]=2;
 	 				cols[29]=7;
 	 				types[29]='hidden';
+	 				slugs[29]='%2Ckey';
 	 			</script>
-	 			
+	 			 
 	 			<div class='letter-text'>,</div>
 	 			
 	 			<div class='name-text'>, key</div>

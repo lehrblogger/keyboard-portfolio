@@ -39,3 +39,8 @@ body{
 	font-size: 3px;
 	padding-top: 15%;
 }
+
+.flickr-photo {
+	width: 30px;
+	height: 30px;
+}
