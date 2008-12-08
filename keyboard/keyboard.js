@@ -1,71 +1,76 @@
-var rowArray = new Array(new Array("Q", "W", "E"/*, "R", "T", "Y", "U", "I", "O", "P"*/),
-				         new Array("A", "S", "D"/*, "F", "G", "H", "J", "K", "L"*/),
-			 	         new Array("Z", "X", "C"/*, "V", "B", "N", "M"*/)
-			   )
-var rowArray = new Array(new Array("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
-				         new Array("A", "S", "D", "F", "G", "H", "J", "K", "L"),
-			 	         new Array("Z", "X", "C", "V", "B", "N", "M")
-			   )
-
+var allDivs;
 var allKeyObjects = new Array();
 var currentKey;	// will be initialized in init()
-var currentSize = 'keySmall';
 var keySize;
 var keyBuffer;
+var initialSize;
+var zoomLevels = new Array(1, 2, 4, 8);
+var currentZoom = zoomLevels[0];
+var currentSize = 'keySmall';
+
 
 function init() {	
-console.log("test");
+	allDivs = $(document.body).getElements('div[class=key]');
+			
+	var tempElem = new Element('div', {'class': 'key'});
+	document.body.grab(tempElem);
+		// FX TWEEN HERE TO GET THE VALUES!!!
+	initialSize = tempElem.getStyle('width').toInt();
+	tempElem.removeClass(currentSize);
+	tempElem.destroy();delete tempElem;
+	
 	updateCurrentKeySize();
 	addKeyObjectsAndEvents();
-	updateCurrentKeyByLetter(rowArray[0][0].toLowerCase());
+	updateCurrentKeyByLetter('q');
 	
 	// add one last event for the spacebar
 	window.addEvent( 'keydown', function(e) {
-     	var evt = new Event(e);
-      	if(evt.key == 'space') { // FIX THIS	
-			decreaseCurrentSize();
-			zoomOnKey(evt.key);
-      	}
-    });
+    if(e.key == 'space') { // FIX THIS	
+			handleKeyPress(e.key, true);
+  	}
+  });
 }
+
 // builds an object and an keypress event for each key
 function addKeyObjectsAndEvents() {
-	for (var i = 0; i < rowArray.length; i++) {
-		for (var j = 0; j < rowArray[i].length; j++) {
-			allKeyObjects.push(new Key(rowArray[i][j], i, j, keyBuffer, keyBuffer));
+	for (var i = 0; i < allDivs.length; i++) {
+			allKeyObjects.push(new Key(allDivs[i], rows[i], cols[i], types[i], keyBuffer, keyBuffer, zoomLevels));
 			
 			window.addEvent( 'keydown', function(e) {
-		     	var evt = new Event(e);
-		      	if(evt.key == this.toLowerCase()) {
-					increaseCurrentSize();
-					zoomOnKey(evt.key);
-		      	}
-		    }.bind(rowArray[i][j]));
-		}
-	}	
+		    var evt = new Event(e);
+		     	if(evt.key == this.toLowerCase()) {
+				    handleKeyPress(evt.key, (currentKey.letter == evt.key));
+		     	}
+		    }.bind(allDivs[i].getProperty('id')));
+	  	}
 }
 
-// zooms around one key - in or out depends on if the current size was just increased or decreased
-function zoomOnKey(letter) {
-	//console.log(currentSize + " " + letter);
+//
+function handleKeyPress(letter, sameKey) {
+	if (!sameKey) {
+		updateCurrentKeyByLetter(letter);	// we only need to update the current letter if it's different (spacebar and that letter keep it the same)
+	} else if (letter == 'space') {
+		decreaseCurrentSize();
+	} else {
+		increaseCurrentSize();
+	}
 
-	if (currentKey.letter != letter) 	updateCurrentKeyByLetter(letter);	// we only need to update the current letter if it's different (spacebar and that letter keep it the same)
-	
 	// these offsets will be dependent on the *NEW* keySize and keyBuffer, but the currentKey's origin and row/col won't change
-    var offsetX = keyBuffer - (currentKey.originX + ((keySize + keyBuffer) * currentKey.col));
-    var offsetY = keyBuffer - (currentKey.originY + ((keySize + keyBuffer) * currentKey.row));	
-
-	// for all the other keys, update the size and location using the tweens
+	var offsetX = keyBuffer - (currentKey.originX + ((keySize + keyBuffer) * currentKey.col));
+  var offsetY = keyBuffer - (currentKey.originY + ((keySize + keyBuffer) * currentKey.row));	
+		
 	for (var i = 0; i < allKeyObjects.length; i++) {
-		allKeyObjects[i].updateSize(currentSize, keySize, false);
+		if (sameKey) allKeyObjects[i].updateSize(currentSize, keySize, false);
 		allKeyObjects[i].updateLoc(offsetX, offsetY, false);
 	}
 }
+
 // goes through all of the key objects, and find the one with the same letter as is passed
 function updateCurrentKeyByLetter(letter) {
 	for (var i = 0; i < allKeyObjects.length; i++) {
 		if (allKeyObjects[i].letter.toLowerCase() == letter) {
 			currentKey = allKeyObjects[i];
+			return;
 		} 
 	}
 }
@@ -74,10 +79,13 @@ function updateCurrentKeyByLetter(letter) {
 function increaseCurrentSize() {
 	if (currentSize == 'keySmall') {
 		currentSize = 'keyMedium';
+		currentZoom = zoomLevels[1];		
 	} else	if (currentSize == 'keyMedium') {
 		currentSize = 'keyLarge';
+		currentZoom = zoomLevels[2];		
 	} else	if (currentSize == 'keyLarge') {
 		currentSize = 'keyImage';			
+		currentZoom = zoomLevels[3];			
 	}	
 	updateCurrentKeySize();
 }
@@ -85,28 +93,20 @@ function increaseCurrentSize() {
 function decreaseCurrentSize() {
 	if (currentSize == 'keyImage') {
 		currentSize = 'keyLarge';
+		currentZoom = zoomLevels[2];		
 	} else	if (currentSize == 'keyLarge') {
 		currentSize = 'keyMedium';
+		currentZoom = zoomLevels[1];		
 	} else	if (currentSize == 'keyMedium') {
 		currentSize = 'keySmall';			
+		currentZoom = zoomLevels[0];		
 	}
+	
 	updateCurrentKeySize();
 }
-// creates a key element with the current class, gets the size, and deletes it. there must be a better way to do this
+
 function updateCurrentKeySize() {
-	var tempElem = new Element('div', {
-		'class': currentSize
-	});
-	document.body.grab(tempElem);
-	// FX TWEEN HERE TO GET THE VALUES!!!
-	keySize = tempElem.getStyle('width').toInt();
+	keySize = initialSize * currentZoom;
 	keyBuffer = keySize / 5;
-	
-	tempElem.removeClass(currentSize);
-	tempElem.destroy();
-	delete tempElem;
 }
-
-
-
 

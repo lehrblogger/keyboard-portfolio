@@ -1,5 +1,6 @@
 <?php
 	require('keyboardLogin.php');  //why does this break it with another inclusion?
+	rebuildKeyboardHTML();
 	
 function rebuildKeyboardHTML() {
 	$keyboardFile = "../keyboard/index.html";
@@ -29,14 +30,35 @@ function buildHTMLContent() {
 	$sql =  "SELECT * FROM " . dbTable();
 	$result = mysql_query($sql);
 
+
+	$tempContent = "
+	  <script type='text/javascript'>
+	 	  var rows = new Array();
+	 	  var cols = new Array();
+	 	  var types = new Array();
+	 	</script>	
+	";
+	$content = $content . $tempContent;
+	
+	$counter = 0;
 	while ($row = mysql_fetch_assoc($result)) {
 		$tempContent = "
-	 		<div id='" . $row["key_char"] . "'>" . "
-				"
-				. $row["name"] . ": " . $row["text"] . "
+	 		<div id='" . $row["key_char"] . "' class='key'>" . "
+	 			<script type='text/javascript'>
+	 				rows[" . $counter . "]=" . $row["row"] . ";
+	 				cols[" . $counter . "]=" . $row["col"] . ";
+	 				types[" . $counter . "]='" . $row["type"] . "';
+	 			</script>
+	 			
+	 			<div class='letter-text'>" . strtoupper($row["key_char"]) . "</div>
+	 			
+	 			<div class='name-text'>" . $row["name"] . "</div>
+	 			
+	 			<div class='body-text'>" . $row["text"] . "</div>
 			</div>
 			";
 		$content = $content . $tempContent;
+		$counter = $counter + 1;
 	}
 	
  	dbClose();
@@ -69,6 +91,7 @@ function buildHTMLString() {
 
 			<script src='keyboard.js' type='text/javascript' charset='utf-8'></script>
 			<script src='key.js' type='text/javascript' charset='utf-8'></script>
+			<script src='textdiv.js' type='text/javascript' charset='utf-8'></script>
 		  </head>
 		<body id='main' onload='init()'>
 	";

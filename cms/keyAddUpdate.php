@@ -1,5 +1,5 @@
 <?php
-//	require('keyboardLogin.php');
+//require('keyboardLogin.php');
 	require('buildHTML.php');
 	
 	// show all errors
@@ -38,7 +38,13 @@
 		if ($col != '') $colsToUpdate = $colsToUpdate . "col='" . $col . "', ";
 		if ($type != '') $colsToUpdate = $colsToUpdate . "type='" . $type . "', ";
 		if ($name != '') $colsToUpdate = $colsToUpdate . "name='" . $name . "', ";
-		if ($slug != '') $colsToUpdate = $colsToUpdate . "slug='" . $slug . "', ";
+		if ($slug != '') {
+			if (strpos($slug, "%") === false)	{ //dont encode it twice
+				$colsToUpdate = $colsToUpdate . "slug='" . urlencode($slug) . "', ";
+			} else { 
+				$colsToUpdate = $colsToUpdate . "slug='" . $slug . "', ";
+			}
+		}
 		if ($text != '') $colsToUpdate = $colsToUpdate . "text='" . $text . "', ";
 		
 		$colsToUpdate = $colsToUpdate . "key_char='" . $key_char . "'"; //a hack to resolve the problem of that last comma

@@ -15,6 +15,7 @@ function drawTable(jsonObj) {
     table.injectInside(document.body);
 
 	var tr = new Element('tr');
+	buildLinkCell(tr, 'New Key', '', true);
 	buildCell(tr, 'Key', true);
 	buildCell(tr, 'Row', true);
 	buildCell(tr, 'Col', true);
@@ -22,7 +23,6 @@ function drawTable(jsonObj) {
 	buildCell(tr, 'Name', true);
 	buildCell(tr, 'URL Slug', true);
 	buildCell(tr, 'Description Text', true);
-	buildLinkCell(tr, 'New Key', '', true);
 	tr.inject(table);
 	
 	var jsonLength = 0;
@@ -38,6 +38,9 @@ function drawTable(jsonObj) {
 }
 
 function buildRow(tableRow, jsonRow) {
+	var phpParams = '/?key_char=' + jsonRow.key_char + '&row=' + jsonRow.row + '&col=' + jsonRow.col + '&type=' + jsonRow.type + '&name=' + jsonRow.name + '&slug=' + escape(jsonRow.slug) + '&text=' + jsonRow.text;
+	buildLinkCell(tableRow, 'Update', phpParams, false);
+	
 	buildCell(tableRow, jsonRow.key_char, false);
 	buildCell(tableRow, jsonRow.row, false);
 	buildCell(tableRow, jsonRow.col, false);
@@ -45,9 +48,6 @@ function buildRow(tableRow, jsonRow) {
 	buildCell(tableRow, jsonRow.name, false);
 	buildCell(tableRow, jsonRow.slug, false);
 	buildCell(tableRow, jsonRow.text, false);
-
-	var phpParams = '/?key_char=' + jsonRow.key_char + '&row=' + jsonRow.row + '&col=' + jsonRow.col + '&type=' + jsonRow.type + '&name=' + jsonRow.name + '&slug=' + jsonRow.slug + '&text=' + jsonRow.text;
-	buildLinkCell(tableRow, 'Update', phpParams, false);
 }
 
 function buildCell(tableRow, data, bold) {

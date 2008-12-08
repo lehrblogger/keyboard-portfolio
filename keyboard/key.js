@@ -1,29 +1,32 @@
 // a separate file for the Key class, since the other one was getting long
 var Key = new Class ( 
 {
-	initialize: function (letter, row, col, originX, originY) {
-		this.letter = letter;
+	initialize: function (element, row, col, type, originX, originY, zoomLevels) {
+		this.duration = 500;
+		this.fps = 24;
+		this.transition = Fx.Transitions.linear;
+		
+		this.element = element;
+		this.letter = this.element.getProperty('id');
 		this.row = row;
 		this.col = col;
 		this.originX = originX;
 		this.originY = originY;
-		this.locMorph = new Fx.Morph(this.element, {});		// declare these here so we can cancel them easily
-		this.sizeMorph = new Fx.Morph(this.element, {});
+		this.locMorph = new Fx.Morph(this.element, {duration: this.duration, fps: this.fps, transition: this.transition});// declare these here so we can cancel them easily
+		this.sizeMorph = new Fx.Morph(this.element, {duration: this.duration, fps: this.fps, transition: this.transition});
 		
-
-		this.element = $(this.letter.toLowerCase());
+		this.border = this.element.getStyle('border-width').toInt();
+		this.width = this.element.getStyle('width').toInt();
+		this.height = this.element.getStyle('height').toInt();
+		this.fontSize = this.element.getStyle('font-size').toInt();
 		
-		if (this.element == null) {
-			this.element = new Element('div', {
-				'id':this.letter.toLowerCase(),
-				'html':this.letter
-			});
-			
-			document.body.grab(this.element);
-		} else {
-			this.element.setProperty('html', this.letter.toUpperCase() + "<br><br>" + this.element.getProperty('html'));
+		this.zoomLevels = zoomLevels;
+		this.zoomLevel = this.zoomLevels[0];
+		
+		this.children = new Array();
+		for(var i = 0; i < this.element.getChildren('div').length; i++) {
+			this.children.push(new TextDiv(this.element.getChildren('div')[i], this.duration, this.fps, this.transition));
 		}
-		
 		
 		// Listen for clicks
 	    this.element.addEvent('click', function(e) {
@@ -31,43 +34,38 @@ var Key = new Class (
 			zoomOnKey(this.letter.toLowerCase());
 	    }.bind(this));
 	
-		this.element.addClass('key');
-		
-		this.updateSize('keySmall', false);
+		this.updateSize('keySmall', this.width, false);
 		this.setSizes(this.element.getStyle('width').toInt());	//we can use this because the previous call isn't tweening and finishes by the time it gets here
 		this.updateLoc(0, 0, false);
 	},
 	
 	// updates the size of the key - 
  	updateSize: function(newSize, dimension, useTween) {
+ 		this.updateZoomLevel(newSize);
+ 	
 		this.setSizes(dimension);	// this has to be passed because we won't know what we are tweeing to until we get there,
 									// and updateLoc will need that information immediately
+									
+		this.sizeMorph.cancel();// cancel the old morph wherever it is, since now there is a new destination
 		if (useTween) {		
-			this.sizeMorph.cancel();// cancel the old morph wherever it is, since now there is a new destination
-			this.sizeMorph = new Fx.Morph(this.element, {duration: 500, fps: 24, transition: Fx.Transitions.linear});
-			this.sizeMorph.addEvent('complete', function(e) {
-	     		this.updateClasses(newSize);	// wait till it is complete to actually update the classes
-			}.bind(this));
-			this.sizeMorph.start('.' + newSize);
+			this.sizeMorph =
+
+			this.sizeMorph.start({
+		    	'border-width': (this.border * zoomLevel),
+		    	'width': (this.width * zoomLevel),
+		    	'height': (this.height * zoomLevel)
+			});
  		} else {
-			this.updateClasses(newSize);		// we don't want to use the tween for the initial setup, and this is useful for debugging
+			this.sizeMorph.set({
+		    	'border-width': (this.border * zoomLevel),
+		    	'width': (this.width * zoomLevel),
+		    	'height': (this.height * zoomLevel)
+			});
 		}
-	},
-
-	// this removes the old size class, and adds the new one
-	// note those styles also need to be removed because the tween DOES NOT ADD A CLASS and only adds the styles in that class
-	updateClasses: function(newSize) {
-		this.element.removeClass('keySmall');
-		this.element.removeClass('keyMedium');
-		this.element.removeClass('keyLarge');
-		this.element.removeClass('keyImage');
-		//this.element.removePropety('style');
-		this.element.setStyle('border', "");
-		this.element.setStyle('width', "");
-		this.element.setStyle('height', "");
-		this.element.setStyle('font', "");
-
-		this.element.addClass(newSize);
+		
+		for(var i = 0; i < this.children.length; i++) {
+			this.children[i].updateSize(zoomLevel, useTween);
+		}
 	},
 	
 	// updates the location of the key, as specified by the left and top CSS sttyles
@@ -77,16 +75,29 @@ var Key = new Class (
 		var targetX = this.originX + ((this.dim + this.buffer) * this.col);
 		var targetY = this.originY + ((this.dim + this.buffer) * this.row);
 		
+		this.locMorph.cancel(); //why not link: 'cancel'?
 		if (useTween) {
-			this.locMorph.cancel(); //why not link: 'cancel'?
-			this.locMorph = new Fx.Morph(this.element, {duration: 500, fps: 24, transition: Fx.Transitions.linear});
 			this.locMorph.start({
 		    	'left': targetX,
 		    	'top': targetY
 			});
 		} else {
-			this.element.setStyle('left', targetX);	// agian, useful for debugging
-			this.element.setStyle('top', targetY);
+			this.locMorph.set({
+		    	'left': targetX,
+		    	'top': targetY
+			});
+		}
+	},
+	
+	updateZoomLevel: function(newSize) {	//later i can just use an int for size
+		if (newSize == 'keySmall') {
+			zoomLevel = zoomLevels[0];			
+		} else	if (newSize == 'keyMedium') {
+			zoomLevel = zoomLevels[1];			
+		} else	if (newSize == 'keyLarge') {
+			zoomLevel = zoomLevels[2];			
+		} else	if (newSize == 'keyImage') {
+			zoomLevel = zoomLevels[3];			
 		}
 	},
 	

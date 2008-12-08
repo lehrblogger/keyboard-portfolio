@@ -1,5 +1,5 @@
 <?php
-	$key_char = '';
+  $key_char = '';
 	$row = '';
 	$col = '';
 	$type = '';
@@ -69,10 +69,11 @@
     }
     ?>
   </select><br/>
-    <!--http://matthom.com/archive/2006/02/13/javascript-set-selected-on-load-->
-  Type: <input id='type' name='type' type='text' class='SmallTextField' maxlength="8"  value=<? echo $type; ?>></input><br/>
-  Name: <input id='name' name='name' type='text' class='SmallTextField' maxlength="50" value=<? echo $name; ?>></input><br/>
-  Slug: <input id='slug' name='slug' type='text' class='SmallTextField' maxlength="50" value=<? echo $slug; ?>></input><br/>
+  
+<!--http://matthom.com/archive/2006/02/13/javascript-set-selected-on-load-->
+  Type: <input id='type' name='type' type='text' class='SmallTextField' maxlength="8"  value="<? echo $type; ?>"></input><br/>
+  Name: <input id='name' name='name' type='text' class='SmallTextField' maxlength="50" value="<? echo $name; ?>"></input><br/>
+  Slug: <input id='slug' name='slug' type='text' class='SmallTextField' maxlength="50" value="<? echo $slug; ?>"></input><br/>
   Text: <textarea id='text' name='text' rows='10' cols='100' maxlength="5000" wrap='virtual' onload="checkCharacterCount(this, $('textCount'))" onkeypress="checkCharacterCount(this, $('textCount'))" onkeyup="checkCharacterCount(this, $('textCount'))"><? echo $text; ?></textarea><br/>
   <span id='textCount' name='textCount'>0</span> of 5000 maximum characters<br/>
 
@@ -81,4 +82,24 @@
   <input id='delete' name='delete' type='button' value='Delete key from database'></input>
 </body>
 </html>
+
+
+
+<?php
+//http://us3.php.net/manual/en/function.nl2br.php#73164
+function p2nl ($str) {
+    return preg_replace(array("/<p[^>]*>/iU","/<\/p[^>]*>/iU"),
+                        array("","\n"),
+                        $str);
+}
+
+//http://us3.php.net/manual/en/function.nl2br.php#86678
+function br2nl($string)
+{
+    return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
+    
+    // or this from http://us3.php.net/manual/en/function.nl2br.php#62801
+    /*return  preg_replace('/<br\\\\s*?\\/??>/i', "\\n", $string);*/
+}
+?>
 
