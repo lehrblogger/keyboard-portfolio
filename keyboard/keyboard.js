@@ -4,7 +4,7 @@ var currentKey;	// will be initialized in init()
 var keySize;
 var keyBuffer;
 var initialSize;
-var zoomLevels = new Array(1, 2, 4, 8);
+var zoomLevels = new Array(1, 3, 9, 12);
 var currentZoom = zoomLevels[0];
 var currentSize = 'keySmall';
 
@@ -34,7 +34,19 @@ function init() {
 // builds an object and an keypress event for each key
 function addKeyObjectsAndEvents() {
 	for (var i = 0; i < allDivs.length; i++) {
-			allKeyObjects.push(new Key(allDivs[i], slugs[i], rows[i], cols[i], types[i], keyBuffer, keyBuffer, zoomLevels));
+			var newKey;
+			
+					   if (types[i] == 'project') {
+				newKey = new ProjectKey(allDivs[i], slugs[i], rows[i], cols[i], keyBuffer, keyBuffer, zoomLevels)
+			} else if (types[i] == 'category') {
+				newKey = new CategoryKey(allDivs[i], slugs[i], rows[i], cols[i], keyBuffer, keyBuffer, zoomLevels)
+			} else if (types[i] == 'hidden') {
+				newKey = new HiddenKey(allDivs[i], slugs[i], rows[i], cols[i], keyBuffer, keyBuffer, zoomLevels)
+			} else { //types[i] == 'blank'
+				newKey = new BlankKey(allDivs[i], slugs[i], rows[i], cols[i], keyBuffer, keyBuffer, zoomLevels)
+			}
+			
+			allKeyObjects.push(newKey);
 			
 			window.addEvent( 'keydown', function(e) {
 		    var evt = new Event(e);
@@ -60,8 +72,8 @@ function handleKeyPress(letter, sameKey) {
   var offsetY = keyBuffer - (currentKey.originY + ((keySize + keyBuffer) * currentKey.row));	
 		
 	for (var i = 0; i < allKeyObjects.length; i++) {
-		if (sameKey) allKeyObjects[i].updateSize(currentSize, keySize, false);
-		allKeyObjects[i].updateLoc(offsetX, offsetY, false);
+		if (sameKey) allKeyObjects[i].updateSize(currentSize, keySize, true);
+		allKeyObjects[i].updateLoc(offsetX, offsetY, true);
 	}
 }
 

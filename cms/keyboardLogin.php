@@ -6,7 +6,7 @@ $username = 'phptester';
 $password = 'tak4yin8anck9ic';
 $database = 'keyboard';
 
-$table = $database . '.keys';
+$table = $database . '.partial_keys';
 
 error_reporting( E_ALL );
 
